@@ -28,15 +28,16 @@ const xmlStr = `<list>
 </list>`;
 const source = parser.parseFromString(xmlStr, "text/xml");
 const elements = source.querySelectorAll("student");
-var result = [];
+var result = new Object();
 
-for (i=0; i < elements.length; i++) {
-    result.push({});
+result.list = [];
+for (let i=0; i < elements.length; i++) {
+    result.list.push({});
     nameElement = elements[i].querySelector("name");
-    result[i].name = nameElement.querySelector("first").textContent;
-    result[i].name += ' ' + nameElement.querySelector("second").textContent;
-    result[i].age = elements[i].querySelector("age").textContent;
-    result[i].prof = elements[i].querySelector("prof").textContent;
-    result[i].lang = nameElement.getAttribute("lang");
+    result.list[i].name = nameElement.querySelector("first").textContent + ' ';
+    result.list[i].name += nameElement.querySelector("second").textContent;
+    result.list[i].age = elements[i].querySelector("age").textContent;
+    result.list[i].prof = elements[i].querySelector("prof").textContent;
+    result.list[i].lang = nameElement.getAttribute("lang");
 }
 console.log(result);
