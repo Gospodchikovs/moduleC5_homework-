@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Задание 1</title>
+</head>
+<body>
+<script>
+    const parser = new DOMParser();
+    const xmlStr = `<list>
+        <student>
+            <name lang="en">
+                <first>Ivan</first>
+                <second>Ivanov</second>
+            </name>
+            <age>35</age>
+            <prof>teacher</prof>
+        </student>
+        <student>
+            <name lang="ru">
+                <first>Петр</first>
+                <second>Петров</second>
+            </name>
+            <age>58</age>
+            <prof>driver</prof>
+        </student>
+    </list>`;
+    const source = parser.parseFromString(xmlStr, "text/xml");
+    const elements = source.querySelectorAll("student");
+    let result = new Object();
+    result.list = [];
+    elements.forEach((element, i) => {
+        const nameElement = element.querySelector("name");
+        result.list.push({});
+        result.list[i].name = nameElement.querySelector("first").textContent + ' ';
+        result.list[i].name += nameElement.querySelector("second").textContent;
+        result.list[i].age = element.querySelector("age").textContent;
+        result.list[i].prof = element.querySelector("prof").textContent;
+        result.list[i].lang = nameElement.getAttribute("lang");
+    });
+    console.log(result);
+</script>
+</body>
+</html>

@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Задание 3</title>
 </head>
 <body>
     <form>
@@ -17,36 +17,28 @@
     <div class="result">Здесь будет результат запроса в виде фото</div>
     <script>
         const URL = "https://picsum.photos/v2/list?limit=";
+        const form = document.querySelector("form");
 
-        function getImages(url, imageCreator, numImages) {
+        form.addEventListener("submit", (event) => {
+            const numImages = document.querySelector('[name="num_photo"]').value;
             let xhr = new XMLHttpRequest();
-            xhr.open('GET', url + numImages);
+
+            event.preventDefault();
+            xhr.open('GET', URL + numImages);
             xhr.onload = () => {
                 if (xhr.status != 200) {
                     console.log("Статус запроса: ", xhr.status);
                 } else {
                     const answer = JSON.parse(xhr.response);
-                    if (imageCreator) imageCreator(answer);
+                    let imagesBlock = '';
+                    answer.forEach(item => {
+                        imagesBlock += `<div><img src="${item.download_url}" alt="img" width="300" height="200"></div>`;
+                    });
+                    document.querySelector(".result").innerHTML = imagesBlock;
                 }
             }
             xhr.send();
-        }
-
-        function showImages(inputList) {
-            let imagesBlock = '';
-            inputList.forEach(item => {
-                imagesBlock += `<div><img src="${item.download_url}" alt="img" width="500" height="350"></div>`;
-            });
-            document.querySelector(".result").innerHTML = imagesBlock;
-        }
-
-        const form = document.querySelector("form");
-        form.addEventListener("submit", (event) => {
-            event.preventDefault();
-            const numImages = document.querySelector('[name="num_photo"]').value;
-            getImages(URL, showImages, numImages);
         });
     </script>
-<!--    <script type="text/javascript" src="main_c5-3.js" ></script>-->
 </body>
 </html>
