@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        Введите числа от (100 до 300):
+        <input pattern="^[1-2][0-9][0-9]$|300" required title="Одно из чисел вне диапазона от 100 до 300" name="inp1"/>
+        <input pattern="^[1-2][0-9][0-9]$|300" required title="Одно из чисел вне диапазона от 100 до 300" name="inp2"/>
+        <input type="submit" value="Отправить" />
+    </form>
+    <br>
+    <div class="result">Здесь будет результат запроса в виде фото</div>
+    <script>
+        const URL = "https://picsum.photos/"
+        const form = document.querySelector("form");
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const width = document.querySelector('[name="inp1"]').value;
+            const height = document.querySelector('[name="inp2"]').value;
+            fetch(URL + width +'/' + height)
+                .then((resp) => { document.querySelector(".result").innerHTML = `<img src="${resp.url}" alt="img">` })
+                .catch(() => { console.log('Error') });
+        });
+    </script>
+</body>
+</html>
