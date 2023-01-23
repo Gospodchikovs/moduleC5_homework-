@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        Введите количество от (1 до 10):
+        <input pattern="^[1-9]$|10" title="Число от 1 до 10" name="num_photo" />
+        <input type="submit" value="Отправить" />
+    </form>
+    <br>
+    <div class="result">Здесь будет результат запроса в виде фото</div>
+    <script>
+        const URL = "https://picsum.photos/v2/list?limit=";
+
+        function getImages(url, imageCreator, numImages) {
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', url + numImages);
+            xhr.onload = () => {
+                if (xhr.status != 200) {
+                    console.log("Статус запроса: ", xhr.status);
+                } else {
+                    const answer = JSON.parse(xhr.response);
+                    if (imageCreator) imageCreator(answer);
+                }
+            }
+            xhr.send();
+        }
+
+        function showImages(inputList) {
+            let imagesBlock = '';
+            inputList.forEach(item => {
+                imagesBlock += `<div><img src="${item.download_url}" alt="img" width="500" height="350"></div>`;
+            });
+            document.querySelector(".result").innerHTML = imagesBlock;
+        }
+
+        const form = document.querySelector("form");
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const numImages = document.querySelector('[name="num_photo"]').value;
+            getImages(URL, showImages, numImages);
+        });
+    </script>
+<!--    <script type="text/javascript" src="main_c5-3.js" ></script>-->
+</body>
+</html>
