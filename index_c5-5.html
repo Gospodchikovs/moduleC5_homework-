@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Задание 5</title>
+</head>
+<body>
+    <form>
+        Страница (от 1 до 10):
+        <input pattern="^[1-9]$|10" required title="Номер страницы вне диапазона от 1 до 10" name="inp1"/>
+        <br>Лимит (от 1 до 10):
+        <input pattern="^[1-9]$|10" required title="Номер страницы вне диапазона от 1 до 10" name="inp2"/>
+        <br><input type="submit" value="Запрос" />
+    </form>
+    <br>
+    <div class="result"></div>
+    <script>
+        function loadImage(urlStr, node) {
+            fetch(urlStr)
+                .then(resp => { return resp.json() })
+                .then(answer => {
+                    let imagesBlock = '';
+                    answer.forEach(item => {
+                        imagesBlock += `<div><img src="${item.download_url}" alt="img" width="300" height="200"></div>`;
+                    });
+                    document.querySelector(node).innerHTML = imagesBlock;
+                })
+        }
+
+        const form = document.querySelector("form");
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const page = document.querySelector('[name="inp1"]').value;
+            const limit = document.querySelector('[name="inp2"]').value;
+            const urlStr = `https://picsum.photos/v2/list?page=${page}&limit=${limit}`;
+            loadImage(urlStr, ".result");
+            localStorage.setItem("url_c5-5",urlStr);
+        })
+        if (localStorage.getItem("url_c5-5") != null) {
+            loadImage(localStorage.getItem("url_c5-5"), ".result")
+        }
+    </script>
+</body>
+</html>
